@@ -1,0 +1,17 @@
+{
+  "name": "inflect",
+  "version": "0.0.1",
+  "description": "inflect.js is a port of the functionality from Ruby on Rails' Active Support inflection classes into Javascript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lonewolfgames/inflect.git"
+  },
+  "main": "./src/index.js",
+  "author": "Nathan Faucett",
+  "license": "BSD",
+  "keywords": [
+    "inflect.js",
+    "inflect"
+  ],
+  "readmeFilename": "README.md"
+}
