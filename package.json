@@ -1,6 +1,6 @@
 {
   "name": "inflect",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "inflect.js is a port of the functionality from Ruby on Rails' Active Support inflection classes into Javascript",
   "repository": {
     "type": "git",

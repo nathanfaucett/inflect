@@ -6,11 +6,11 @@ inflect.js is a port of the functionality from Ruby on Rails' Active Support inf
 
 ##Methods##
 
-pluralize(String, locale) -> "box" -> "boxes"
+pluralize(String [, locale]) -> "box" -> "boxes"
 
-singularize(String, locale) -> "boxes" -> "box"
+singularize(String [, locale]) -> "boxes" -> "box"
 
-camelize(String, lowFirstLetter) -> "hello_world" -> "HelloWorld"
+camelize(String [, lowFirstLetter]) -> "hello_world" -> "HelloWorld"
 
 underscore(String) -> "HelloWorld" -> "hello_world"
 
@@ -20,9 +20,9 @@ humanize(String) -> "box_id" -> "Box"
 
 titleize(String) -> "title.of_the/app" -> "Title Of The App"
 
-tableize(String, locale) -> "Box" -> "boxes"
+tableize(String [, locale]) -> "Box" -> "boxes"
 
-classify(String, locale) -> "Boxes" -> "box"
+classify(String [, locale]) -> "Boxes" -> "box"
 
 demodulize(String) -> "Module::Name/file" -> file
 
@@ -31,6 +31,7 @@ foreignKey(String [, joinedId]) -> returns word_id or wordid
 ordinal(Number) -> st, nd, nd, th
 
 ordinalize(Number) -> 1st, 2nd, 3nd, ...th
+
 
 ##Inflections##
 
