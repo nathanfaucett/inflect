@@ -31,7 +31,7 @@ ordinalize(Number) -> 1st, 2nd, 3nd, ...th
 
 ##Inflections##
 
-es = inflections("es");
+var en = inflections("en"); //returns "en" Inflector or creates new if not defined
 
 en.plural(rule, replacement);
 
