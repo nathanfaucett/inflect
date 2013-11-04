@@ -1,6 +1,9 @@
 inflect
 =====
 
+inflect.js is a port of the functionality from Ruby on Rails' Active Support inflection classes into Javascript
+
+
 ##Methods##
 
 pluralize(String, locale) -> "box" -> "boxes"
