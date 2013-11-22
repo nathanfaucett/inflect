@@ -1,7 +1,7 @@
 var inflections = require("./inflections"),
     
     SPILTER = /[ \_\-\.]+/g,
-    MODULE_SPILTER = /[\/::]+/g
+    MODULE_SPILTER = /[\. \/:]+/g,
     ID = /_id$/,
     UPPERCASE = /([A-Z])/g,
     UNDERSCORE_PREFIX = /^_/,
@@ -98,7 +98,7 @@ exports.demodulize = demodulize;
 
 function foreignKey(word, joinedId) {
     
-    return underscore(demodulize(word)) + (joinedId ? "id" : "_id")
+    return underscore(word) + (joinedId ? "id" : "_id")
 };
 exports.foreignKey = foreignKey;
 

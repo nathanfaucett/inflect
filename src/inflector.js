@@ -67,7 +67,7 @@ Inflector.prototype.singularize = function(word) {
 
 
 function replace(word, rule, replacement) {
-
+	
     return rule.test(word) ? word.replace(rule, replacement) : false;
 }
 
