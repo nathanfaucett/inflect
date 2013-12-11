@@ -1,13 +1,20 @@
 var inflections = require("./inflections"),
+
+    path = require("path"),
+    diveSync = require("../util").diveSync,
+    cwd = process.cwd(),
     
     SPILTER = /[ \_\-\.]+/g,
     MODULE_SPILTER = /[\. \/:]+/g,
     ID = /_id$/,
-    UPPERCASE = /([A-Z])/g,
-    UNDERSCORE_PREFIX = /^_/,
+    UNDERSCORE = /([a-z\d])([A-Z])/g,
     DASH_PREFIX = /^-/,
     
     abs = Math.abs;
+
+
+require("./languages/en");
+require("./languages/es");
 
 
 function pluralize(word, locale) {
@@ -24,13 +31,31 @@ function singularize(word, locale) {
 exports.singularize = singularize;
 
 
+function capitalize(word, allWords) {
+    if (allWords) {
+        var parts = word.split(SPILTER),
+            string = "", part, i, il;
+        
+        for (i = 0, il = parts.length; i < il; i++) {
+            part = parts[i];
+            string += part[0].toUpperCase() + part.slice(1).toLowerCase();
+        }
+        
+        return string;
+    }
+    
+    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+};
+exports.capitalize = capitalize;
+
+
 function camelize(word, lowFirstLetter) {
     var parts = word.split(SPILTER),
         string = "", part, i, il;
     
     for (i = 0, il = parts.length; i < il; i++) {
         part = parts[i];
-        string += part[0].toUpperCase() + part.slice(1);
+        string += part[0].toUpperCase() + part.slice(1).toLowerCase();
     }
     
     return lowFirstLetter ? string[0].toLowerCase() + string.slice(1) : string;
@@ -40,7 +65,7 @@ exports.camelize = camelize;
 
 function underscore(word) {
     
-    return word.replace(UPPERCASE, "_$1").toLowerCase().replace(UNDERSCORE_PREFIX, "");
+    return word.replace(UNDERSCORE, "$1_$2").toLowerCase();
 };
 exports.underscore = underscore;
 
@@ -53,10 +78,8 @@ exports.dasherize = dasherize;
 
 
 function humanize(word) {
-    var string = word[0].toUpperCase() + word.slice(1);
-    string = string.replace(ID, "");
     
-    return string.split(SPILTER).join(" ");
+    return (word[0].toUpperCase() + word.slice(1).toLowerCase()).replace(ID, "").split(SPILTER).join(" ");
 };
 exports.humanize = humanize;
 
@@ -67,7 +90,7 @@ function titleize(word) {
     
     for (i = 0, il = parts.length; i < il; i++) {
         part = parts[i];
-        parts[i] = part[0].toUpperCase() + part.slice(1);
+        parts[i] = part[0].toUpperCase() + part.slice(1).toLowerCase();
     }
     
     return parts.join(" ");
@@ -107,12 +130,20 @@ function constantize(word) {
     var name = demodulize(word),
         constant;
     
-    if ((constant = global[name])) return constant;
-    if ((constant = global[camelize(name)])) return constant;
-    if ((constant = global[camelize(name, true)])) return constant;
-    if ((constant = global[underscore(name)])) return constant;
+    diveSync(cwd, function(err, file) {
+        var ext = path.extname(file),
+            fileName = path.basename(file, ext);
+        
+        if (ext !== ".js") return;
+        
+        if (word === fileName) {
+            try{
+                constant = require(file);
+            } catch(e) {}
+        }
+    });
     
-    return undefined;
+    return constant;
 };
 exports.constantize = constantize;
 

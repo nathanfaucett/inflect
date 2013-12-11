@@ -1,0 +1,52 @@
+var es = require("../inflections")("es");
+
+es.plural(/$/, "es");
+es.plural(/(ng|[wckgtp])$/i, "$1s");
+es.plural(/([íú])$/i, "$1es");
+es.plural(/z$/i, "ces");
+es.plural(/([éí])(s)$/i, "$1$2es");
+es.plural(/([aeiou])s$/i, "$1s");
+es.plural(/([aeiouáéó])$/i, "$1s");
+es.plural(/(^[bcdfghjklmnñpqrstvwxyz]*)([aeiou])([ns])$/i, "$1$2$3es");
+es.plural(/([áéíóú])s$/i, "$1ses");
+es.plural(/(^[bcdfghjklmnñpqrstvwxyz]*)an$/i, "$1anes");
+es.plural(/([á])([ns])$/i, "a$2es");
+es.plural(/([é])([ns])$/i, "e$2es");
+es.plural(/([í])([ns])$/i, "i$2es");
+es.plural(/([ó])([ns])$/i, "o$2es");
+es.plural(/([ú])([ns])$/i, "u$2es");
+es.plural(/([aeiou])x$/i, "$1x");
+
+es.singular(/es$/i, "");
+es.singular(/([ghñpv]e)s$/i, "$1");
+es.singular(/([bcdfghjklmnñprstvwxyz]{2,}e)s$/i, "$1");
+es.singular(/([^e])s$/i, "$1");
+es.singular(/(é)s$/i, "$1");
+es.singular(/(sis|tis|xis)+$/i, "$1");
+es.singular(/(ces)$/i, "z");
+es.singular(/oides$/i, "oide");
+es.singular(/([a])([ns])es$/i, "á$2");
+es.singular(/([e])([ns])es$/i, "é$2");
+es.singular(/([i])([ns])es$/i, "í$2");
+es.singular(/([o])([ns])es$/i, "ó$2");
+es.singular(/([u])([ns])es$/i, "ú$2");
+es.singular(/^([bcdfghjklmnñpqrstvwxyz]*)([aeiou])([ns])es$/i, "$1$2$3");
+
+es.irregular("país", "países");
+es.irregular("champú", "champús");
+es.irregular("jersey", "jerséis");
+es.irregular("carácter", "caracteres");
+es.irregular("espécimen", "especímenes");
+es.irregular("menú", "menús");
+es.irregular("régimen", "regímenes");
+es.irregular("curriculum", "currículos");
+es.irregular("ultimátum", "ultimatos");
+es.irregular("memorándum", "memorandos");
+es.irregular("referéndum", "referendos");
+
+es.uncountable("tijeras");
+es.uncountable("gafas");
+es.uncountable("agua");
+es.uncountable("vacaciones");
+es.uncountable("víveres");
+es.uncountable("déficit");

@@ -11,19 +11,19 @@ function Inflector(locale){
 
 Inflector.prototype.uncountable = function(word) {
 
-    return this.uncountables.unshift(word);
+    return this.uncountables.push(word);
 };
 
 
 Inflector.prototype.plural = function(rule, replacement) {
 
-    return this.plurals.unshift([rule, replacement]);
+    return this.plurals.push([rule, replacement]);
 };
 
 
 Inflector.prototype.singular = function(rule, replacement) {
 
-    return this.singulars.unshift([rule, replacement]);
+    return this.singulars.push([rule, replacement]);
 };
 
 
