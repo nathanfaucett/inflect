@@ -8,7 +8,6 @@ var inflections = require("./inflections"),
     MODULE_SPILTER = /[\. \/:]+/g,
     ID = /_id$/,
     UNDERSCORE = /([a-z\d])([A-Z])/g,
-    DASH_PREFIX = /^-/,
     
     abs = Math.abs;
 
@@ -24,11 +23,25 @@ function pluralize(word, locale) {
 exports.pluralize = pluralize;
 
 
+function isPlural(word, locale) {
+    
+    return inflections(locale).isPlural(word);
+};
+exports.isPlural = isPlural;
+
+
 function singularize(word, locale) {
     
     return inflections(locale).singularize(word);
 };
 exports.singularize = singularize;
+
+
+function isSingular(word, locale) {
+    
+    return inflections(locale).isSingular(word);
+};
+exports.isSingular = isSingular;
 
 
 function capitalize(word, allWords) {

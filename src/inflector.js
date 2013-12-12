@@ -50,6 +50,22 @@ Inflector.prototype.pluralize = function(word) {
 };
 
 
+Inflector.prototype.isPlural = function(word) {
+    if (this.uncountables.indexOf(word) !== -1) return false;
+    var plurals = this.plurals,
+        result, pattern,
+        i;
+	
+    for (i = plurals.length; i--;) {
+        pattern = plurals[i];
+
+        if ((result = pattern[0].test(word))) return result;
+    }
+
+    return false;
+};
+
+
 Inflector.prototype.singularize = function(word) {
     if (this.uncountables.indexOf(word) !== -1) return word;
     var singulars = this.singulars,
@@ -63,6 +79,22 @@ Inflector.prototype.singularize = function(word) {
     }
 
     return word;
+};
+
+
+Inflector.prototype.isSingular = function(word) {
+    if (this.uncountables.indexOf(word) !== -1) return false;
+    var singulars = this.singulars,
+        result, pattern,
+        i;
+	
+    for (i = singulars.length; i--;) {
+        pattern = singulars[i];
+
+        if ((result = pattern[0].test(word))) return result;
+    }
+
+    return false;
 };
 
 
