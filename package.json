@@ -14,5 +14,8 @@
     "inflect.js",
     "inflect"
   ],
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "node-util": "0.0.4"
+  }
 }

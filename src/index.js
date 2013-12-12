@@ -1,7 +1,7 @@
 var inflections = require("./inflections"),
 
     path = require("path"),
-    diveSync = require("../util").diveSync,
+    diveSync = require("node-util").diveSync,
     cwd = process.cwd(),
     
     SPILTER = /[ \_\-\.]+/g,
@@ -131,16 +131,21 @@ function constantize(word) {
         constant;
     
     diveSync(cwd, function(err, file) {
+        if (file.substring(cwd.length).indexOf("node_modules") !== -1) return true;
         var ext = path.extname(file),
             fileName = path.basename(file, ext);
         
-        if (ext !== ".js") return;
+        if (ext !== ".js") return true;
         
         if (word === fileName) {
             try{
                 constant = require(file);
             } catch(e) {}
+            
+            if (constant) return false;
         }
+        
+        return true;
     });
     
     return constant;

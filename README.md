@@ -28,6 +28,8 @@ inflect.demodulize(String) -> "Module::Name/file" -> file
 
 inflect.foreignKey(String [, joinedId]) -> returns word_id or wordid
 
+inflect.constantize(String) -> dives into directories looking for module, excludes node_modules in search
+
 inflect.ordinal(Number) -> st, nd, rd, th
 
 inflect.ordinalize(Number) -> 1st, 2nd, 3nd, ...th
