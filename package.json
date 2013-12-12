@@ -1,7 +1,7 @@
 {
   "name": "node-inflect",
   "version": "1.0.0",
-  "description": "inflect.js is a port of the functionality from Ruby on Rails' Active Support inflection classes into Javascript",
+  "description": "port of the functionality from Ruby on Rails' Active Support inflection classes into Javascript",
   "repository": {
     "type": "git",
     "url": "https://github.com/nathanfaucett/node-inflect.git"
@@ -16,6 +16,6 @@
   ],
   "readmeFilename": "README.md",
   "dependencies": {
-    "node-util": "0.0.4"
+    "node-util": ""
   }
 }
