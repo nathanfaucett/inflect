@@ -4,7 +4,7 @@ var inflections = require("./inflections"),
     diveSync = require("node-util").diveSync,
     cwd = process.cwd(),
     
-    SPILTER = /[ \_\-\.]+/g,
+    SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
     MODULE_SPILTER = /[\. \/:]+/g,
     ID = /_id$/,
     UNDERSCORE = /([a-z\d])([A-Z])/g,
@@ -132,9 +132,17 @@ function demodulize(word) {
 exports.demodulize = demodulize;
 
 
-function foreignKey(word, joinedId) {
+function foreignKey(word, key, camelized, lowFirstLetter) {
+    if (typeof(key) === "boolean") {
+        lowFirstLetter = camelized;
+        camelized = key;
+        key = "id";
+    }
+    key = key == undefined ? "id" : key;
+    lowFirstLetter = lowFirstLetter == undefined ? true : lowFirstLetter;
     
-    return underscore(word) + (joinedId ? "id" : "_id")
+    if (camelized) return camelize(word +"_"+ key, lowFirstLetter);
+    return underscore(word +"_"+ key);
 };
 exports.foreignKey = foreignKey;
 

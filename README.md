@@ -26,7 +26,7 @@ inflect.classify(String [, locale]) -> "boxes" -> "Box"
 
 inflect.demodulize(String) -> "Module::Name/file" -> file
 
-inflect.foreignKey(String [, joinedId]) -> returns word_id or wordid
+inflect.foreignKey(String [, key] [, camelized] [, lowFirstLetter]) -> returns string_key || stringKey || StringKey
 
 inflect.constantize(String) -> dives into directories looking for module, excludes node_modules in search
 
