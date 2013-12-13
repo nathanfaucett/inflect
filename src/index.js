@@ -90,9 +90,9 @@ function dasherize(word) {
 exports.dasherize = dasherize;
 
 
-function humanize(word) {
+function humanize(word, foreignKeyRegex) {
     
-    return (word[0].toUpperCase() + word.slice(1).toLowerCase()).replace(ID, "").split(SPILTER).join(" ");
+    return (word[0].toUpperCase() + word.slice(1).toLowerCase()).replace(foreignKeyRegex || ID, "").split(SPILTER).join(" ");
 };
 exports.humanize = humanize;
 
