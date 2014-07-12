@@ -1,6 +1,6 @@
 {
   "name": "node-inflect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "port of the functionality from Ruby on Rails' Active Support inflection classes into Javascript",
   "repository": {
     "type": "git",

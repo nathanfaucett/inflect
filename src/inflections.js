@@ -1,15 +1,14 @@
-var Inflector = require("./inflector"),
-	locales = {};
+var Inflector = require("./inflector");
 
 
-function inflections(locale){
-	locale || (locale = inflections.defaultLocale);
-	
-	return locales[locale] || (locales[locale] = new Inflector(locale));
+function inflections(locale) {
+    locale || (locale = inflections.defaultLocale);
+
+    return inflections.locales[locale] || (inflections.locales[locale] = new Inflector(locale));
 }
 
 
-inflections.locales = locales;
+inflections.locales = {};
 inflections.defaultLocale = "en";
 
 

@@ -1,138 +1,129 @@
 var inflections = require("./inflections"),
-
-    path = require("path"),
-    diveSync = require("node-util").diveSync,
-    cwd = process.cwd(),
-    
-    SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
-    MODULE_SPILTER = /[\. \/:]+/g,
-    ID = /_id$/,
-    UNDERSCORE = /([a-z\d])([A-Z])/g,
-    
-    abs = Math.abs;
+    inflector = require("./inflector");
 
 
 require("./languages/en");
 require("./languages/es");
 
 
-function pluralize(word, locale) {
-    
+var inflect = module.exports,
+
+    SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
+    MODULE_SPILTER = /[\. \/:]+/g,
+    ID = /_id$/,
+    UNDERSCORE = /([a-z\d])([A-Z])/g;
+
+
+inflect.inflections = inflections;
+inflect.inflector = inflector;
+
+
+inflect.pluralize = function(word, locale) {
+
     return inflections(locale).pluralize(word);
 };
-exports.pluralize = pluralize;
 
 
-function isPlural(word, locale) {
-    
+inflect.isPlural = function(word, locale) {
+
     return inflections(locale).isPlural(word);
 };
-exports.isPlural = isPlural;
 
 
-function singularize(word, locale) {
-    
+inflect.singularize = function(word, locale) {
+
     return inflections(locale).singularize(word);
 };
-exports.singularize = singularize;
 
 
-function isSingular(word, locale) {
-    
+inflect.singularize = function(word, locale) {
+
     return inflections(locale).isSingular(word);
 };
-exports.isSingular = isSingular;
 
 
-function capitalize(word, allWords) {
+inflect.capitalize = function(word, allWords) {
     if (allWords) {
         var parts = word.split(SPILTER),
-            string = "", part, i, il;
-        
+            string = "",
+            part, i, il;
+
         for (i = 0, il = parts.length; i < il; i++) {
             part = parts[i];
             string += part[0].toUpperCase() + part.slice(1).toLowerCase();
         }
-        
+
         return string;
     }
-    
+
     return word[0].toUpperCase() + word.slice(1).toLowerCase();
 };
-exports.capitalize = capitalize;
 
 
-function camelize(word, lowFirstLetter) {
+inflect.camelize = function(word, lowFirstLetter) {
     var parts = word.split(SPILTER),
-        string = "", part, i, il;
-    
+        string = "",
+        part, i, il;
+
     for (i = 0, il = parts.length; i < il; i++) {
         part = parts[i];
         string += part[0].toUpperCase() + part.slice(1).toLowerCase();
     }
-    
+
     return lowFirstLetter ? string[0].toLowerCase() + string.slice(1) : string;
 };
-exports.camelize = camelize;
 
 
-function underscore(word) {
-    
+inflect.underscore = function(word) {
+
     return word.replace(UNDERSCORE, "$1_$2").toLowerCase();
 };
-exports.underscore = underscore;
 
 
-function dasherize(word) {
-    
+inflect.dasherize = function(word) {
+
     return word.replace("_", "-");
 };
-exports.dasherize = dasherize;
 
 
-function humanize(word, foreignKeyRegex) {
-    
+inflect.humanize = function(word, foreignKeyRegex) {
+
     return (word[0].toUpperCase() + word.slice(1).toLowerCase()).replace(foreignKeyRegex || ID, "").split(SPILTER).join(" ");
 };
-exports.humanize = humanize;
 
 
-function titleize(word) {
+inflect.titleize = function(word) {
     var parts = word.split(SPILTER),
         part, i, il;
-    
+
     for (i = 0, il = parts.length; i < il; i++) {
         part = parts[i];
         parts[i] = part[0].toUpperCase() + part.slice(1).toLowerCase();
     }
-    
+
     return parts.join(" ");
 };
-exports.titleize = titleize;
 
 
-function tableize(word, locale) {
-    
-    return pluralize(underscore(word), locale);
+inflect.tableize = function(word, locale) {
+
+    return inflect.pluralize(inflect.underscore(word), locale);
 };
-exports.tableize = tableize;
 
 
-function classify(word, locale) {
-    
-    return camelize(singularize(word), locale);
+inflect.classify = function(word, locale) {
+
+    return inflect.camelize(inflect.singularize(word), locale);
 };
-exports.classify = classify;
 
 
-function demodulize(word) {
-    
+inflect.demodulize = function(word) {
+
     return word.split(MODULE_SPILTER).pop();
 };
-exports.demodulize = demodulize;
 
 
-function foreignKey(word, key, camelized, lowFirstLetter) {
+inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
     if (typeof(key) === "boolean") {
         lowFirstLetter = camelized;
         camelized = key;
@@ -140,62 +131,28 @@ function foreignKey(word, key, camelized, lowFirstLetter) {
     }
     key = key == undefined ? "id" : key;
     lowFirstLetter = lowFirstLetter == undefined ? true : lowFirstLetter;
-    
-    if (camelized) return camelize(word +"_"+ key, lowFirstLetter);
-    return underscore(word +"_"+ key);
+
+    if (camelized) return inflect.camelize(word + "_" + key, lowFirstLetter);
+    return inflect.underscore(word + "_" + key);
 };
-exports.foreignKey = foreignKey;
 
 
-function constantize(word) {
-    var name = demodulize(word),
-        constant;
-    
-    diveSync(cwd, function(err, file) {
-        if (file.substring(cwd.length).indexOf("node_modules") !== -1) return true;
-        var ext = path.extname(file),
-            fileName = path.basename(file, ext);
-        
-        if (ext !== ".js") return true;
-        
-        if (word === fileName) {
-            try{
-                constant = require(file);
-            } catch(e) {}
-            
-            if (constant) return false;
-        }
-        
-        return true;
-    });
-    
-    return constant;
-};
-exports.constantize = constantize;
+inflect.ordinal = function(num) {
+    num = Math.abs(num % 100) % 10;
 
-
-function ordinal(num) {
-    num = abs(num % 100) % 10;
-    
-    switch(num){
-        case 1:
-            return "st";
-        case 2:
-            return "nd";
-        case 3:
-            return "rd";
-        default:
-            return "th";
+    if (num === 1) {
+        return "st";
+    } else if (num === 2) {
+        return "nd";
+    } else if (num === 3) {
+        return "rd";
+    } else {
+        return "th";
     }
 };
-exports.ordinal = ordinal;
 
 
-function ordinalize(num) {
+inflect.ordinalize = function(num) {
 
-    return num + ordinal(num);
+    return num + inflect.ordinal(num);
 };
-exports.ordinalize = ordinalize;
-
-
-exports.inflections = inflections;

@@ -1,12 +1,20 @@
+function Inflector(locale) {
 
-
-function Inflector(locale){
-	
-	this.locale = locale;
-	this.plurals = [];
-	this.singulars = [];
-	this.uncountables = [];
+    this.locale = locale;
+    this.plurals = [];
+    this.singulars = [];
+    this.uncountables = [];
 }
+
+
+Inflector.prototype.clear = function() {
+
+    this.plurals.length = 0;
+    this.singulars.length = 0;
+    this.uncountables.length = 0;
+
+    return this;
+};
 
 
 Inflector.prototype.uncountable = function(word) {
@@ -37,7 +45,8 @@ Inflector.prototype.irregular = function(singular, plural) {
 Inflector.prototype.pluralize = function(word) {
     if (this.uncountables.indexOf(word) !== -1) return word;
     var plurals = this.plurals,
-        result = word, pattern,
+        result = word,
+        pattern,
         i;
 
     for (i = plurals.length; i--;) {
@@ -51,27 +60,18 @@ Inflector.prototype.pluralize = function(word) {
 
 
 Inflector.prototype.isPlural = function(word) {
-    if (this.uncountables.indexOf(word) !== -1) return false;
-    var plurals = this.plurals,
-        result, pattern,
-        i;
-	
-    for (i = plurals.length; i--;) {
-        pattern = plurals[i];
 
-        if ((result = pattern[0].test(word))) return result;
-    }
-
-    return false;
+    return this.singularize(word) !== word;
 };
 
 
 Inflector.prototype.singularize = function(word) {
     if (this.uncountables.indexOf(word) !== -1) return word;
     var singulars = this.singulars,
-        result = word, pattern,
+        result = word,
+        pattern,
         i;
-	
+
     for (i = singulars.length; i--;) {
         pattern = singulars[i];
 
@@ -83,23 +83,47 @@ Inflector.prototype.singularize = function(word) {
 
 
 Inflector.prototype.isSingular = function(word) {
-    if (this.uncountables.indexOf(word) !== -1) return false;
-    var singulars = this.singulars,
-        result, pattern,
+
+    return this.pluralize(word) !== word;
+};
+
+
+Inflector.prototype.toJSON = function(json) {
+    json || (json = {});
+    var jsonPlurals = json.plurals || (json.plurals = []),
+        jsonSingulars = json.singulars || (json.singulars = []),
+        jsonUncountables = json.uncountables || (json.uncountables = []),
         i;
-	
-    for (i = singulars.length; i--;) {
-        pattern = singulars[i];
 
-        if ((result = pattern[0].test(word))) return result;
-    }
+    json.locale = this.locale;
 
-    return false;
+    for (i = this.plurals.length; i--;) jsonPlurals[i] = this.plurals[i].slice();
+    for (i = this.singulars.length; i--;) jsonSingulars[i] = this.singulars[i].slice();
+    for (i = this.uncountables.length; i--;) jsonUncountables[i] = this.uncountables[i];
+
+    return json;
+};
+
+
+Inflector.prototype.fromJSON = function(json) {
+    var jsonPlurals = json.plurals,
+        jsonSingulars = json.singulars,
+        jsonUncountables = json.uncountables,
+        i;
+
+    this.clear();
+    this.locale = this.locale;
+
+    for (i = jsonPlurals.length; i--;) this.plurals[i] = jsonPlurals[i].slice();
+    for (i = jsonSingulars.length; i--;) this.singulars[i] = jsonSingulars[i].slice();
+    for (i = jsonUncountables.length; i--;) this.uncountables[i] = jsonUncountables[i];
+
+    return this;
 };
 
 
 function replace(word, rule, replacement) {
-	
+
     return rule.test(word) ? word.replace(rule, replacement) : false;
 }
 
