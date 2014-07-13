@@ -1,21 +1,22 @@
 {
-  "name": "node-inflect",
-  "version": "1.0.1",
-  "description": "port of the functionality from Ruby on Rails' Active Support inflection classes into Javascript",
+  "name": "inflect",
+  "version": "0.0.1",
+  "description": "node.js file path utils for the browser and node.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanfaucett/node-inflect.git"
+    "url": "https://github.com/nathanfaucett/inflect.git"
   },
-  "main": "./src/index.js",
-  "author": "Nathan Faucett",
-  "license": "BSD",
+  "main": "src/index.js",
   "keywords": [
-    "node-inflect",
-    "inflect.js",
-    "inflect"
+    "inflect",
+    "inflect.js"
   ],
+  "author": "Nathan Faucett",
+  "license": "BSD-2-Clause",
   "readmeFilename": "README.md",
-  "dependencies": {
-    "node-util": ""
+  "devDependencies": {
+    "grunt": "",
+    "grunt-jsbeautifier": ""
   }
 }
+
