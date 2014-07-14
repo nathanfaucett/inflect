@@ -36,7 +36,7 @@ inflect.singularize = function(word, locale) {
 };
 
 
-inflect.singularize = function(word, locale) {
+inflect.isSingular = function(word, locale) {
 
     return inflections(locale).isSingular(word);
 };
@@ -129,8 +129,8 @@ inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
         camelized = key;
         key = "id";
     }
-    key = key == undefined ? "id" : key;
-    lowFirstLetter = lowFirstLetter == undefined ? true : lowFirstLetter;
+    key = !key ? "id" : key;
+    lowFirstLetter = !lowFirstLetter ? true : lowFirstLetter;
 
     if (camelized) return inflect.camelize(word + "_" + key, lowFirstLetter);
     return inflect.underscore(word + "_" + key);
