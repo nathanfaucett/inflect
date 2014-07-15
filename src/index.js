@@ -107,13 +107,13 @@ inflect.titleize = function(word) {
 
 inflect.tableize = function(word, locale) {
 
-    return inflect.pluralize(inflect.underscore(word), locale);
+    return inflect.underscore(inflect.underscore(word, locale));
 };
 
 
 inflect.classify = function(word, locale) {
 
-    return inflect.camelize(inflect.singularize(word), locale);
+    return inflect.camelize(inflect.singularize(word, locale));
 };
 
 
