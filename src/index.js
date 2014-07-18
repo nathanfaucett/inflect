@@ -130,7 +130,6 @@ inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
         key = "id";
     }
     key = !key ? "id" : key;
-    lowFirstLetter = !lowFirstLetter ? true : lowFirstLetter;
 
     if (camelized) return inflect.camelize(word + "_" + key, lowFirstLetter);
     return inflect.underscore(word + "_" + key);
