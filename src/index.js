@@ -107,7 +107,7 @@ inflect.titleize = function(word) {
 
 inflect.tableize = function(word, locale) {
 
-    return inflect.underscore(inflect.underscore(word, locale));
+    return inflect.underscore(inflect.pluralize(word, locale));
 };
 
 
