@@ -19,19 +19,22 @@ Inflector.prototype.clear = function() {
 
 Inflector.prototype.uncountable = function(word) {
 
-    return this.uncountables.push(word);
+    this.uncountables.push(word)
+    return this;
 };
 
 
 Inflector.prototype.plural = function(rule, replacement) {
 
-    return this.plurals.push([rule, replacement]);
+    this.plurals.push([rule, replacement]);
+    return this;
 };
 
 
 Inflector.prototype.singular = function(rule, replacement) {
 
-    return this.singulars.push([rule, replacement]);
+    this.singulars.push([rule, replacement]);
+    return this;
 };
 
 
@@ -39,6 +42,8 @@ Inflector.prototype.irregular = function(singular, plural) {
 
     this.plural(new RegExp("\\b" + singular + "\\b"), plural);
     this.singular(new RegExp("\\b" + plural + "\\b"), singular);
+
+    return this;
 };
 
 
