@@ -6,7 +6,6 @@ function Inflector(locale) {
     this.uncountables = [];
 }
 
-
 Inflector.prototype.clear = function() {
 
     this.plurals.length = 0;
@@ -16,13 +15,11 @@ Inflector.prototype.clear = function() {
     return this;
 };
 
-
 Inflector.prototype.uncountable = function(word) {
 
     this.uncountables.push(word)
     return this;
 };
-
 
 Inflector.prototype.plural = function(rule, replacement) {
 
@@ -30,13 +27,11 @@ Inflector.prototype.plural = function(rule, replacement) {
     return this;
 };
 
-
 Inflector.prototype.singular = function(rule, replacement) {
 
     this.singulars.push([rule, replacement]);
     return this;
 };
-
 
 Inflector.prototype.irregular = function(singular, plural) {
 
@@ -45,7 +40,6 @@ Inflector.prototype.irregular = function(singular, plural) {
 
     return this;
 };
-
 
 Inflector.prototype.pluralize = function(word) {
     if (this.uncountables.indexOf(word) !== -1) return word;
@@ -63,12 +57,10 @@ Inflector.prototype.pluralize = function(word) {
     return word;
 };
 
-
 Inflector.prototype.isPlural = function(word) {
 
     return this.singularize(word) !== word;
 };
-
 
 Inflector.prototype.singularize = function(word) {
     if (this.uncountables.indexOf(word) !== -1) return word;
@@ -86,12 +78,10 @@ Inflector.prototype.singularize = function(word) {
     return word;
 };
 
-
 Inflector.prototype.isSingular = function(word) {
 
     return this.pluralize(word) !== word;
 };
-
 
 Inflector.prototype.toJSON = function(json) {
     json || (json = {});
@@ -109,7 +99,6 @@ Inflector.prototype.toJSON = function(json) {
     return json;
 };
 
-
 Inflector.prototype.fromJSON = function(json) {
     var jsonPlurals = json.plurals,
         jsonSingulars = json.singulars,
@@ -117,7 +106,7 @@ Inflector.prototype.fromJSON = function(json) {
         i;
 
     this.clear();
-    this.locale = this.locale;
+    this.locale = json.locale;
 
     for (i = jsonPlurals.length; i--;) this.plurals[i] = jsonPlurals[i].slice();
     for (i = jsonSingulars.length; i--;) this.singulars[i] = jsonSingulars[i].slice();
@@ -125,7 +114,6 @@ Inflector.prototype.fromJSON = function(json) {
 
     return this;
 };
-
 
 function replace(word, rule, replacement) {
 

@@ -11,7 +11,13 @@ var inflect = module.exports,
     SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
     MODULE_SPILTER = /[\. \/:]+/g,
     ID = /_id$/,
-    UNDERSCORE = /([a-z\d])([A-Z])/g;
+    UNDERSCORE = /([a-z\d])([A-Z])/g,
+
+    NON_TITLE_CASED = [
+        "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at",
+        "by", "from", "into", "on", "onto", "off", "out", "in", "over",
+        "with", "for"
+    ];
 
 
 inflect.inflections = inflections;
@@ -45,15 +51,14 @@ inflect.isSingular = function(word, locale) {
 inflect.capitalize = function(word, allWords) {
     if (allWords) {
         var parts = word.split(SPILTER),
-            string = "",
-            part, i, il;
+            part, i = parts.length;
 
-        for (i = 0, il = parts.length; i < il; i++) {
+        while (i--) {
             part = parts[i];
-            string += part[0].toUpperCase() + part.slice(1).toLowerCase();
+            parts[i] = part[0].toUpperCase() + part.slice(1).toLowerCase();
         }
 
-        return string;
+        return parts.join("");
     }
 
     return word[0].toUpperCase() + word.slice(1).toLowerCase();
@@ -62,15 +67,15 @@ inflect.capitalize = function(word, allWords) {
 
 inflect.camelize = function(word, lowFirstLetter) {
     var parts = word.split(SPILTER),
-        string = "",
-        part, i, il;
+        part, i = parts.length;
 
-    for (i = 0, il = parts.length; i < il; i++) {
+    while (i--) {
         part = parts[i];
-        string += part[0].toUpperCase() + part.slice(1).toLowerCase();
+        parts[i] = part[0].toUpperCase() + part.slice(1).toLowerCase();
     }
+    parts = parts.join("");
 
-    return lowFirstLetter ? string[0].toLowerCase() + string.slice(1) : string;
+    return lowFirstLetter ? parts[0].toLowerCase() + parts.slice(1) : parts;
 };
 
 
@@ -94,10 +99,11 @@ inflect.humanize = function(word, foreignKeyRegex) {
 
 inflect.titleize = function(word) {
     var parts = word.split(SPILTER),
-        part, i, il;
+        part, i = parts.length;
 
-    for (i = 0, il = parts.length; i < il; i++) {
-        part = parts[i];
+    while (i--) {
+        part = parts[i].toLowerCase();
+        if (NON_TITLE_CASED.indexOf(part) !== -1) continue;
         parts[i] = part[0].toUpperCase() + part.slice(1).toLowerCase();
     }
 
@@ -129,7 +135,7 @@ inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
         camelized = key;
         key = "id";
     }
-    key = !key ? "id" : key;
+    key = key != null ? key : "id";
 
     if (camelized) return inflect.camelize(word + "_" + key, lowFirstLetter);
     return inflect.underscore(word + "_" + key);
