@@ -1,7 +1,7 @@
 {
   "name": "inflect",
   "version": "0.0.1",
-  "description": "node.js file path utils for the browser and node.js",
+  "description": "inflect for the browser and node.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/nathanfaucett/inflect.git"
