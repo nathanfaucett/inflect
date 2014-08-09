@@ -143,7 +143,13 @@ inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
 
 
 inflect.ordinal = function(num) {
-    num = Math.abs(num % 100) % 10;
+    num = Math.abs(num % 100);
+
+    if (num > 9 && num < 14) {
+        return "th";
+    }
+
+    num = num % 10;
 
     if (num === 1) {
         return "st";
