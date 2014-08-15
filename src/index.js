@@ -111,6 +111,19 @@ inflect.titleize = function(word) {
 };
 
 
+inflect.constize = function(word) {
+    var parts = word.split(SPILTER),
+        part, i = parts.length;
+
+    while (i--) {
+        part = parts[i];
+        parts[i] = part.toUpperCase();
+    }
+
+    return parts.join("_");
+};
+
+
 inflect.tableize = function(word, locale) {
 
     return inflect.underscore(inflect.pluralize(word, locale));
