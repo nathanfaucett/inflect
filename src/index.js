@@ -91,7 +91,12 @@ inflect.dasherize = function(word) {
 };
 
 
-inflect.humanize = function(word, foreignKeyRegex) {
+inflect.humanize = function(word, key) {
+    var foreignKeyRegex;
+
+    if (key) {
+        foreignKeyRegex = key instanceof RegExp ? key : new RegExp("/_" + (key || "id") + "$/");
+    }
 
     return (word[0].toUpperCase() + word.slice(1).toLowerCase()).replace(foreignKeyRegex || ID, "").split(SPILTER).join(" ");
 };
