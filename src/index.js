@@ -4,13 +4,12 @@ var inflections = require("./inflections"),
 
 require("./languages/en");
 require("./languages/es");
+require("./languages/fr");
 
 
 var inflect = module.exports,
 
     SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
-    MODULE_SPILTER = /[\. \/:]+/g,
-    ID = /_id$/,
 
     NON_TITLE_CASED = [
         "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at",
@@ -88,15 +87,13 @@ inflect.dasherize = function(word) {
 
 
 inflect.humanize = function(word, key, camelcase) {
-    var foreignKeyRegex;
+    var foreignKeyRegex = key;
 
-    if (key instanceof RegExp) {
-        foreignKeyRegex = key;
-    } else {
+    if (!(key instanceof RegExp)) {
         foreignKeyRegex = new RegExp((camelcase !== false ? capitalize(key || "id") : "_" + (key || "id")) + "$");
     }
 
-    return word.replace(foreignKeyRegex || ID, "").split(SPILTER).join(" ");
+    return word.replace(foreignKeyRegex, "").split(SPILTER).join(" ");
 };
 
 
@@ -127,21 +124,19 @@ inflect.constize = function(word) {
 };
 
 
-inflect.tableize = function(word, locale) {
+inflect.tableize = function(word, camelcase, locale) {
+    if (typeof(camelcase) === "string") {
+        locale = camelcase;
+        camelcase = true;
+    }
 
-    return inflect.underscore(inflect.pluralize(word, locale));
+    return camelcase !== false ? inflect.camelize(inflect.pluralize(word, locale)) : inflect.underscore(inflect.pluralize(word, locale));
 };
 
 
 inflect.classify = function(word, locale) {
 
-    return inflect.camelize(inflect.singularize(word, locale));
-};
-
-
-inflect.demodulize = function(word) {
-
-    return word.split(MODULE_SPILTER).pop();
+    return inflect.camelize(inflect.singularize(word, locale), false);
 };
 
 

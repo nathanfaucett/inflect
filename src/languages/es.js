@@ -10,7 +10,7 @@ inflect.plural(/í([sn])$/i, "i$1es");
 inflect.plural(/ó([sn])$/i, "o$1es");
 inflect.plural(/ú([sn])$/i, "u$1es");
 
-inflect.singular(/s$/, "");
-inflect.singular(/es$/, "");
+inflect.singular(/s$/i, "");
+inflect.singular(/es$/i, "");
 
 inflect.irregular("el", "los");

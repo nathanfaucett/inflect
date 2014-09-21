@@ -15,9 +15,12 @@ Inflector.prototype.clear = function() {
     return this;
 };
 
-Inflector.prototype.uncountable = function(word) {
+Inflector.prototype.uncountable = function() {
+    var uncountables = this.uncountables,
+        length = arguments.length,
+        i = -1;
 
-    this.uncountables.push(word)
+    while (++i < length) uncountables.push(arguments[i].toLowerCase());
     return this;
 };
 
@@ -35,8 +38,8 @@ Inflector.prototype.singular = function(rule, replacement) {
 
 Inflector.prototype.irregular = function(singular, plural) {
 
-    this.plural(new RegExp("\\b" + singular + "\\b"), plural);
-    this.singular(new RegExp("\\b" + plural + "\\b"), singular);
+    this.plural(new RegExp("\\b" + singular + "\\b", "i"), plural);
+    this.singular(new RegExp("\\b" + plural + "\\b", "i"), singular);
 
     return this;
 };
@@ -47,7 +50,7 @@ Inflector.prototype.pluralize = function(word) {
         pattern,
         i;
 
-    if (this.uncountables.indexOf(word) !== -1) return word;
+    if (this.uncountables.indexOf(word.toLowerCase()) !== -1) return word;
 
     for (i = plurals.length; i--;) {
         pattern = plurals[i];
@@ -69,7 +72,7 @@ Inflector.prototype.singularize = function(word) {
         pattern,
         i;
 
-    if (this.uncountables.indexOf(word) !== -1) return word;
+    if (this.uncountables.indexOf(word.toLowerCase()) !== -1) return word;
 
     for (i = singulars.length; i--;) {
         pattern = singulars[i];
