@@ -11,7 +11,6 @@ var inflect = module.exports,
     SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
     MODULE_SPILTER = /[\. \/:]+/g,
     ID = /_id$/,
-    UNDERSCORE = /([a-z\d])([A-Z])|\_/g,
 
     NON_TITLE_CASED = [
         "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at",
@@ -23,6 +22,10 @@ var inflect = module.exports,
 inflect.inflections = inflections;
 inflect.inflector = inflector;
 
+function capitalize(str) {
+
+    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+}
 
 inflect.pluralize = function(word, locale) {
 
@@ -53,15 +56,11 @@ inflect.capitalize = function(word, allWords) {
         var parts = word.split(SPILTER),
             part, i = parts.length;
 
-        while (i--) {
-            part = parts[i];
-            parts[i] = part[0].toUpperCase() + part.slice(1).toLowerCase();
-        }
-
+        while (i--) parts[i] = capitalize(parts[i]);
         return parts.join("");
     }
 
-    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+    return capitalize(word);
 };
 
 
@@ -69,36 +68,35 @@ inflect.camelize = function(word, lowFirstLetter) {
     var parts = word.split(SPILTER),
         part, i = parts.length;
 
-    while (i--) {
-        part = parts[i];
-        parts[i] = part[0].toUpperCase() + part.slice(1).toLowerCase();
-    }
-    parts = parts.join("");
+    while (i--) parts[i] = capitalize(parts[i]);
+    word = parts.join("");
 
-    return lowFirstLetter ? parts[0].toLowerCase() + parts.slice(1) : parts;
+    return lowFirstLetter !== false ? word[0].toLowerCase() + word.slice(1) : word;
 };
 
 
 inflect.underscore = function(word) {
 
-    return word.replace(UNDERSCORE, "$1_$2").toLowerCase();
+    return word.split(SPILTER).join("_").toLowerCase();
 };
 
 
 inflect.dasherize = function(word) {
 
-    return word.replace(UNDERSCORE, "$1-$2").toLowerCase();
+    return word.split(SPILTER).join("-").toLowerCase();
 };
 
 
-inflect.humanize = function(word, key) {
+inflect.humanize = function(word, key, camelcase) {
     var foreignKeyRegex;
 
-    if (key) {
-        foreignKeyRegex = key instanceof RegExp ? key : new RegExp("_" + (key || "id") + "$");
+    if (key instanceof RegExp) {
+        foreignKeyRegex = key;
+    } else {
+        foreignKeyRegex = new RegExp((camelcase !== false ? capitalize(key || "id") : "_" + (key || "id")) + "$");
     }
 
-    return (word[0].toUpperCase() + word.slice(1).toLowerCase()).replace(foreignKeyRegex || ID, "").split(SPILTER).join(" ");
+    return word.replace(foreignKeyRegex || ID, "").split(SPILTER).join(" ");
 };
 
 
@@ -109,7 +107,7 @@ inflect.titleize = function(word) {
     while (i--) {
         part = parts[i].toLowerCase();
         if (NON_TITLE_CASED.indexOf(part) !== -1) continue;
-        parts[i] = part[0].toUpperCase() + part.slice(1);
+        parts[i] = capitalize(part);
     }
 
     return parts.join(" ");
@@ -156,6 +154,7 @@ inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
     key = key != null ? key : "id";
 
     if (camelized) return inflect.camelize(word + "_" + key, lowFirstLetter);
+
     return inflect.underscore(word + "_" + key);
 };
 

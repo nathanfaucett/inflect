@@ -8,7 +8,7 @@ function inflections(locale) {
 }
 
 
-inflections.locales = Object.create(null);
+inflections.locales = {};
 inflections.defaultLocale = "en";
 
 

@@ -42,11 +42,12 @@ Inflector.prototype.irregular = function(singular, plural) {
 };
 
 Inflector.prototype.pluralize = function(word) {
-    if (this.uncountables.indexOf(word) !== -1) return word;
     var plurals = this.plurals,
         result = word,
         pattern,
         i;
+
+    if (this.uncountables.indexOf(word) !== -1) return word;
 
     for (i = plurals.length; i--;) {
         pattern = plurals[i];
@@ -63,11 +64,12 @@ Inflector.prototype.isPlural = function(word) {
 };
 
 Inflector.prototype.singularize = function(word) {
-    if (this.uncountables.indexOf(word) !== -1) return word;
     var singulars = this.singulars,
         result = word,
         pattern,
         i;
+
+    if (this.uncountables.indexOf(word) !== -1) return word;
 
     for (i = singulars.length; i--;) {
         pattern = singulars[i];
