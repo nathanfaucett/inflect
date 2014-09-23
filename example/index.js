@@ -2,10 +2,10 @@ var inflect = global.inflect = require("../src/index.js");
 
 
 (function underscorify(obj, seen) {
-    var underscore, key;
+    var underscore, key, value;
 
     for (key in obj) {
-        var underscore = inflect.underscore(key);
+        underscore = inflect.underscore(key);
 
         if (key === "location" || underscore === key) {
             continue;
@@ -25,6 +25,4 @@ var inflect = global.inflect = require("../src/index.js");
         obj[underscore] = value;
         if (value && value.prototype) value.prototype = underscorify(value.prototype, seen);
     }
-
-    console.log(seen);
 }(global, []));

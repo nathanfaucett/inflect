@@ -10,7 +10,7 @@ require("./languages/fr");
 var inflect = module.exports,
 
     //SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
-    MATCHER = /[a-z0-9]+|[A-Z][^A-Z\s\-\_\.]+|[A-Z]+/g,
+    MATCHER = /[a-z0-9]+|[A-Z][^A-Z-_\s\.]+|[A-Z]+/g,
 
     NON_TITLE_CASED = [
         "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at",
@@ -38,6 +38,8 @@ inflect.isPlural = function(word, locale) {
     return inflections(locale).isPlural(word);
 };
 
+inflect.is_plural = inflect.isPlural;
+
 
 inflect.singularize = function(word, locale) {
 
@@ -49,6 +51,8 @@ inflect.isSingular = function(word, locale) {
 
     return inflections(locale).isSingular(word);
 };
+
+inflect.is_singular = inflect.isSingular;
 
 
 inflect.capitalize = function(word, allWords) {
@@ -153,6 +157,8 @@ inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
 
     return inflect.underscore(word + "_" + key);
 };
+
+inflect.foreign_key = inflect.foreignKey;
 
 
 inflect.ordinal = function(num) {

@@ -66,6 +66,8 @@ Inflector.prototype.isPlural = function(word) {
     return this.singularize(word) !== word;
 };
 
+Inflector.prototype.is_plural = Inflector.prototype.isPlural;
+
 Inflector.prototype.singularize = function(word) {
     var singulars = this.singulars,
         result = word,
@@ -88,6 +90,8 @@ Inflector.prototype.isSingular = function(word) {
     return this.pluralize(word) !== word;
 };
 
+Inflector.prototype.is_singular = Inflector.prototype.isSingular;
+
 Inflector.prototype.toJSON = function(json) {
     json || (json = {});
     var jsonPlurals = json.plurals || (json.plurals = []),
@@ -104,6 +108,8 @@ Inflector.prototype.toJSON = function(json) {
     return json;
 };
 
+Inflector.prototype.to_json = Inflector.prototype.toJSON;
+
 Inflector.prototype.fromJSON = function(json) {
     var jsonPlurals = json.plurals,
         jsonSingulars = json.singulars,
@@ -119,6 +125,8 @@ Inflector.prototype.fromJSON = function(json) {
 
     return this;
 };
+
+Inflector.prototype.from_json = Inflector.prototype.fromJSON;
 
 function replace(word, rule, replacement) {
 
