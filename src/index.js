@@ -9,7 +9,6 @@ require("./languages/fr");
 
 var inflect = module.exports,
 
-    //SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
     MATCHER = /[a-z0-9]+|[A-Z][^A-Z-_\s\.]+|[A-Z]+/g,
 
     NON_TITLE_CASED = [

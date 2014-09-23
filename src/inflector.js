@@ -38,6 +38,9 @@ Inflector.prototype.singular = function(rule, replacement) {
 
 Inflector.prototype.irregular = function(singular, plural) {
 
+    singular = singular.toLowerCase();
+    plural = plural.toLowerCase();
+
     this.plural(new RegExp("\\b" + singular + "\\b", "i"), plural);
     this.singular(new RegExp("\\b" + plural + "\\b", "i"), singular);
 
@@ -47,12 +50,12 @@ Inflector.prototype.irregular = function(singular, plural) {
 Inflector.prototype.pluralize = function(word) {
     var plurals = this.plurals,
         result = word,
-        pattern,
-        i;
+        i = plurals.length,
+        pattern;
 
     if (this.uncountables.indexOf(word.toLowerCase()) !== -1) return word;
 
-    for (i = plurals.length; i--;) {
+    while (i--) {
         pattern = plurals[i];
 
         if ((result = replace(word, pattern[0], pattern[1]))) return result;
@@ -71,12 +74,12 @@ Inflector.prototype.is_plural = Inflector.prototype.isPlural;
 Inflector.prototype.singularize = function(word) {
     var singulars = this.singulars,
         result = word,
-        pattern,
-        i;
+        i = singulars.length,
+        pattern;
 
     if (this.uncountables.indexOf(word.toLowerCase()) !== -1) return word;
 
-    for (i = singulars.length; i--;) {
+    while (i--) {
         pattern = singulars[i];
 
         if ((result = replace(word, pattern[0], pattern[1]))) return result;

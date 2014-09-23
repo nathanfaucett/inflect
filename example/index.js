@@ -24,5 +24,6 @@ var inflect = global.inflect = require("../src/index.js");
 
         obj[underscore] = value;
         if (value && value.prototype) value.prototype = underscorify(value.prototype, seen);
+        if (value && value.__proto__) value.__proto__ = underscorify(value.__proto__, seen);
     }
 }(global, []));
