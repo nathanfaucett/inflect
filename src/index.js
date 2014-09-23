@@ -9,7 +9,8 @@ require("./languages/fr");
 
 var inflect = module.exports,
 
-    SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
+    //SPILTER = /[ \_\-\.]+|(?=[A-Z][^A-Z])/g,
+    MATCHER = /[a-z0-9]+|[A-Z][^A-Z\s\-\_\.]+|[A-Z]+/g,
 
     NON_TITLE_CASED = [
         "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at",
@@ -52,7 +53,7 @@ inflect.isSingular = function(word, locale) {
 
 inflect.capitalize = function(word, allWords) {
     if (allWords) {
-        var parts = word.split(SPILTER),
+        var parts = word.match(MATCHER),
             part, i = parts.length;
 
         while (i--) parts[i] = capitalize(parts[i]);
@@ -64,7 +65,7 @@ inflect.capitalize = function(word, allWords) {
 
 
 inflect.camelize = function(word, lowFirstLetter) {
-    var parts = word.split(SPILTER),
+    var parts = word.match(MATCHER),
         part, i = parts.length;
 
     while (i--) parts[i] = capitalize(parts[i]);
@@ -76,13 +77,13 @@ inflect.camelize = function(word, lowFirstLetter) {
 
 inflect.underscore = function(word) {
 
-    return word.split(SPILTER).join("_").toLowerCase();
+    return word.match(MATCHER).join("_").toLowerCase();
 };
 
 
 inflect.dasherize = function(word) {
 
-    return word.split(SPILTER).join("-").toLowerCase();
+    return word.match(MATCHER).join("-").toLowerCase();
 };
 
 
@@ -93,12 +94,12 @@ inflect.humanize = function(word, key, camelcase) {
         foreignKeyRegex = new RegExp((camelcase !== false ? capitalize(key || "id") : "_" + (key || "id")) + "$");
     }
 
-    return word.replace(foreignKeyRegex, "").split(SPILTER).join(" ");
+    return word.replace(foreignKeyRegex, "").match(MATCHER).join(" ");
 };
 
 
 inflect.titleize = function(word) {
-    var parts = word.split(SPILTER),
+    var parts = word.match(MATCHER),
         part, i = parts.length;
 
     while (i--) {
@@ -112,7 +113,7 @@ inflect.titleize = function(word) {
 
 
 inflect.constize = function(word) {
-    var parts = word.split(SPILTER),
+    var parts = word.match(MATCHER),
         part, i = parts.length;
 
     while (i--) {
@@ -146,9 +147,9 @@ inflect.foreignKey = function(word, key, camelized, lowFirstLetter) {
         camelized = key;
         key = "id";
     }
-    key = key != null ? key : "id";
+    key = typeof(key) === "string" ? key : "id";
 
-    if (camelized) return inflect.camelize(word + "_" + key, lowFirstLetter);
+    if (camelized !== false) return inflect.camelize(word + "_" + key, lowFirstLetter);
 
     return inflect.underscore(word + "_" + key);
 };
