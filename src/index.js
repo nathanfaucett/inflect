@@ -9,10 +9,10 @@ require("./languages/fr");
 
 var inflect = module.exports,
 
-    MATCHER = /[^A-Z-_\s\.]+|[A-Z][^A-Z-_\s\.]+|[^a-z-_\s\.]+/g,
+    MATCHER = /[^A-Z-_ \.]+|[A-Z][^A-Z-_ \.]+|[^a-z-_ \.]+/g,
 
     NON_TITLE_CASED = [
-        "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at",
+        "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at", "is",
         "by", "from", "into", "on", "onto", "off", "out", "in", "over",
         "with", "for"
     ];
@@ -55,15 +55,15 @@ inflect.is_singular = inflect.isSingular;
 
 
 inflect.capitalize = function(word, allWords) {
-    if (allWords) {
+    if (allWords !== false) {
         var parts = word.match(MATCHER),
             part, i = parts.length;
 
         while (i--) parts[i] = capitalize(parts[i]);
-        return parts.join("");
+        return parts.join(" ");
     }
 
-    return capitalize(word);
+    return capitalize(word.match(MATCHER).join(" "));
 };
 
 
@@ -185,3 +185,54 @@ inflect.ordinalize = function(num) {
 
     return num + inflect.ordinal(num);
 };
+
+
+inflect.extendString = function() {
+    each([
+        "pluralize",
+        "isPlural",
+        "is_plural",
+        "singularize",
+        "isSingular",
+        "is_singular",
+        "capitalize",
+        "camelize",
+        "underscore",
+        "dasherize",
+        "humanize",
+        "titleize",
+        "constize",
+        "tableize",
+        "classify",
+        "foreignKey",
+        "foreign_key"
+    ], function(key) {
+        String.prototype[key] = function() {
+
+            return inflect[key](this, arguments[0], arguments[1], arguments[2]);
+        };
+    });
+};
+
+inflect.extendNumber = function() {
+    each([
+        "ordinal",
+        "ordinalize"
+    ], function(key) {
+        Number.prototype[key] = function() {
+
+            return inflect[key](this);
+        };
+    });
+};
+
+function each(array, fn) {
+    var i = -1,
+        length = array.length - 1;
+
+    while (i++ < length) {
+        if (fn(array[i], i, array) === false) break;
+    }
+
+    return array;
+}

@@ -1,6 +1,9 @@
 var inflect = global.inflect = require("../src/index.js");
 
 
+inflect.extendString();
+inflect.extendNumber();
+
 (function underscorify(obj, seen) {
     var underscore, key, value;
 
