@@ -9,7 +9,7 @@ require("./languages/fr");
 
 var inflect = module.exports,
 
-    MATCHER = /[a-z0-9]+|[A-Z][^A-Z-_\s\.]+|[A-Z]+/g,
+    MATCHER = /[^A-Z-_\s\.]+|[A-Z][^A-Z-_\s\.]+|[^a-z-_\s\.]+/g,
 
     NON_TITLE_CASED = [
         "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at",

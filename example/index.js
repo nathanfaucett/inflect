@@ -23,7 +23,13 @@ var inflect = global.inflect = require("../src/index.js");
         }
 
         obj[underscore] = value;
-        if (value && value.prototype) value.prototype = underscorify(value.prototype, seen);
-        if (value && value.__proto__) value.__proto__ = underscorify(value.__proto__, seen);
+        if (value && value.prototype) {
+            value.prototype.to_string = value.prototype.toString;
+            value.prototype = underscorify(value.prototype, seen);
+        }
+        if (value && value.__proto__) {
+            value.__proto__.to_string = value.__proto__.toString;
+            value.__proto__ = underscorify(value.__proto__, seen);
+        }
     }
 }(global, []));
