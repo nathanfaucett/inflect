@@ -5,7 +5,7 @@ inflect.extendString();
 inflect.extendNumber();
 
 (function underscorify(obj, seen) {
-    var underscore, key, value;
+    var underscore, key, value, proto;
 
     for (key in obj) {
         underscore = inflect.underscore(key);
@@ -30,9 +30,9 @@ inflect.extendNumber();
             value.prototype.to_string = value.prototype.toString;
             value.prototype = underscorify(value.prototype, seen);
         }
-        if (value && value.__proto__) {
-            value.__proto__.to_string = value.__proto__.toString;
-            value.__proto__ = underscorify(value.__proto__, seen);
+        if (value && typeof(value) === "object" && (proto = Object.getPrototypeOf(value))) {
+            proto.to_string = proto.toString;
+            proto = underscorify(proto, seen);
         }
     }
 }(global, []));
