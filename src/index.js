@@ -57,7 +57,7 @@ inflect.is_singular = inflect.isSingular;
 inflect.capitalize = function(word, allWords) {
     if (allWords !== false) {
         var parts = word.match(MATCHER),
-            part, i = parts.length;
+            i = parts.length;
 
         while (i--) parts[i] = capitalize(parts[i]);
         return parts.join(" ");
@@ -69,7 +69,7 @@ inflect.capitalize = function(word, allWords) {
 
 inflect.camelize = function(word, lowFirstLetter) {
     var parts = word.match(MATCHER),
-        part, i = parts.length;
+        i = parts.length;
 
     while (i--) parts[i] = capitalize(parts[i]);
     word = parts.join("");
