@@ -9,7 +9,7 @@ require("./languages/fr");
 
 var inflect = module.exports,
 
-    MATCHER = /[^A-Z-_ \.]+|[A-Z][^A-Z-_ \.]+|[^a-z-_ \.]+/g,
+    reMatcher = /[^A-Z-_ \.]+|[A-Z][^A-Z-_ \.]+|[^a-z-_ \.]+/g,
 
     NON_TITLE_CASED = [
         "and", "or", "nor", "a", "an", "the", "so", "but", "to", "of", "at", "is",
@@ -56,19 +56,19 @@ inflect.is_singular = inflect.isSingular;
 
 inflect.capitalize = function(word, allWords) {
     if (allWords !== false) {
-        var parts = word.match(MATCHER),
+        var parts = word.match(reMatcher),
             i = parts.length;
 
         while (i--) parts[i] = capitalize(parts[i]);
         return parts.join(" ");
     }
 
-    return capitalize(word.match(MATCHER).join(" "));
+    return capitalize(word.match(reMatcher).join(" "));
 };
 
 
 inflect.camelize = function(word, lowFirstLetter) {
-    var parts = word.match(MATCHER),
+    var parts = word.match(reMatcher),
         i = parts.length;
 
     while (i--) parts[i] = capitalize(parts[i]);
@@ -80,13 +80,13 @@ inflect.camelize = function(word, lowFirstLetter) {
 
 inflect.underscore = function(word) {
 
-    return word.match(MATCHER).join("_").toLowerCase();
+    return word.match(reMatcher).join("_").toLowerCase();
 };
 
 
 inflect.dasherize = function(word) {
 
-    return word.match(MATCHER).join("-").toLowerCase();
+    return word.match(reMatcher).join("-").toLowerCase();
 };
 
 
@@ -97,12 +97,12 @@ inflect.humanize = function(word, key, camelcase) {
         foreignKeyRegex = new RegExp((camelcase !== false ? capitalize(key || "id") : "_" + (key || "id")) + "$");
     }
 
-    return word.replace(foreignKeyRegex, "").match(MATCHER).join(" ");
+    return word.replace(foreignKeyRegex, "").match(reMatcher).join(" ");
 };
 
 
 inflect.titleize = function(word) {
-    var parts = word.match(MATCHER),
+    var parts = word.match(reMatcher),
         part, i = parts.length;
 
     while (i--) {
@@ -116,7 +116,7 @@ inflect.titleize = function(word) {
 
 
 inflect.constize = function(word) {
-    var parts = word.match(MATCHER),
+    var parts = word.match(reMatcher),
         part, i = parts.length;
 
     while (i--) {
