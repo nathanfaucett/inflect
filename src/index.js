@@ -1,5 +1,5 @@
 var inflections = require("./inflections"),
-    inflector = require("./inflector");
+    Inflector = require("./inflector");
 
 
 require("./languages/en");
@@ -19,7 +19,7 @@ var inflect = module.exports,
 
 
 inflect.inflections = inflections;
-inflect.inflector = inflector;
+inflect.Inflector = Inflector;
 
 function capitalize(str) {
 
@@ -208,7 +208,6 @@ inflect.extendString = function() {
         "foreign_key"
     ], function(key) {
         String.prototype[key] = function() {
-
             return inflect[key](this, arguments[0], arguments[1], arguments[2]);
         };
     });
@@ -220,7 +219,6 @@ inflect.extendNumber = function() {
         "ordinalize"
     ], function(key) {
         Number.prototype[key] = function() {
-
             return inflect[key](this);
         };
     });
